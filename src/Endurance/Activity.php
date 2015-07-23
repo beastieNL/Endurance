@@ -71,8 +71,27 @@ class Activity
         return $this->laps[$index];
     }
 
+    public function setCalories($calories)
+    {
+        $this->calories = $calories;
+    }
+
+    public function getCalories()
+    {
+        return $this->calories;
+    }
+
     public function getLaps()
     {
         return $this->laps;
+    }
+
+    public function getTracks($lapNode)
+    {
+        $data = array();
+        foreach ($lapNode->Track as $track) {
+            $data = array_combine($data,(array)$track);
+        }
+        return $data;
     }
 }

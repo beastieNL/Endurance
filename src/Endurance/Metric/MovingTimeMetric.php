@@ -17,6 +17,7 @@ class MovingTimeMetric extends Metric
             for ($index = $keys[0] + 1; $index < $count; $index++) {
                 $interval = $points[$index]->getTimestamp() - $points[$index - 1]->getTimestamp();
                 if ($interval > 10 || $points[$index]->getSpeed() <= 1) {
+                #if ($points[$index]->getSpeed() <= 1) {
                     $movingTime -= $interval;
                 }
             }

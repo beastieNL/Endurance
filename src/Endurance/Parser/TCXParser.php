@@ -15,9 +15,26 @@ class TCXParser extends Parser
             throw new \Exception(sprintf('Unable to read file "%s"', $file));
         }
 
+        $xml = simplexml_load_file($file);
+
+        return $this->parseData($xml);
+    }
+
+    public function parseFromString($data)
+    {
+        if (empty($data)) {
+            throw new \Exception('Empty data to read');
+        }
+
+        $xml = simplexml_load_from_string($data);
+
+        return $this->parseData($xml);
+    }
+
+    private function parseData($xml)
+    {
         $activity = new Activity();
 
-        $xml = simplexml_load_file($file);
         if (!isset($xml->Activities->Activity)) {
             throw new \Exception(sprintf('Unable to find an Activity', $file));
         }
@@ -27,14 +44,18 @@ class TCXParser extends Parser
         $activity->setStartTime(new \DateTime((string) $activityNode->Id));
 
         $laps = array();
+        $calories = 0;
         foreach ($activityNode->Lap as $lapNode) {
-            $laps[] = $this->parseLap($activity, $lapNode);
+            $newLap = $this->parseLap($activity, $lapNode);
+            $laps[] = $newLap;
+            $calories += $newLap->calories;
         }
 
         if (count($laps) > 1) {
             // Only set the laps if there is more than one
             $activity->setLaps($laps);
         }
+        $activity->setCalories($calories);
 
         return $activity;
     }
@@ -53,12 +74,15 @@ class TCXParser extends Parser
     protected function parseLap(Activity $activity, \SimpleXMLElement $lapNode)
     {
         $startIndex = count($activity->getPoints());
-        $this->parseTrack($activity, $lapNode->Track);
+        foreach ($lapNode->Track as $track) {
+            $this->parseTrack($activity, $track);
+        }
+        $calories = (isset($lapNode->Calories)) ? $lapNode->Calories : 0;
 
-        return new Lap($startIndex, count($activity->getPoints()) - 1);
+        return new Lap($startIndex, count($activity->getPoints()) - 1, $calories);
     }
 
-    protected function parseTrack(Activity $activity, \SimpleXMLElement $trackNode)
+    protected function parseTrack(Activity $activity, $trackNode)
     {
         foreach ($trackNode->Trackpoint as $trackpointNode) {
             $point = $this->parseTrackpoint($trackpointNode);
@@ -72,7 +96,7 @@ class TCXParser extends Parser
     {
         // Skip the point if lat/lng not found
         if (!isset($trackpointNode->Position->LatitudeDegrees) || !isset($trackpointNode->Position->LongitudeDegrees)) {
-            return;
+            #return;
         }
 
         $point = new Point();
@@ -80,7 +104,8 @@ class TCXParser extends Parser
         $point->setDistance((float) $trackpointNode->DistanceMeters);
         $point->setLatitude((float) $trackpointNode->Position->LatitudeDegrees);
         $point->setLongitude((float) $trackpointNode->Position->LongitudeDegrees);
-        $point->getTime()->modify((string) $trackpointNode->Time);
+        $point->time = new \DateTime($trackpointNode->Time);
+        #$point->getTime()->modify((string) $trackpointNode->Time);
 
         if (isset($trackpointNode->HeartRateBpm->Value)) {
             $point->setHeartRate((int) $trackpointNode->HeartRateBpm->Value);

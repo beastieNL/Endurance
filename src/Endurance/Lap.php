@@ -18,15 +18,29 @@ class Lap
      */
     protected $end;
 
-    public function __construct($start = 0, $end = 0)
+
+    public $calories;
+
+    public function __construct($start = 0, $end = 0, $calories = 0)
     {
         $this->setStart($start);
         $this->setEnd($end);
+        $this->setCalories($calories);
     }
 
     public function setStart($start)
     {
         $this->start = (int) $start;
+    }
+
+    public function setCalories($calories)
+    {
+        $this->calories = (int) $calories;
+    }
+
+    public function getCalories()
+    {
+        return $this->calories;
     }
 
     public function getStart()
