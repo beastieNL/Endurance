@@ -33,7 +33,6 @@ class Activity
     public function getStartTime()
     {
         return $this->startTime;
-    }
 
     public function addPoint(Point $point)
     {
