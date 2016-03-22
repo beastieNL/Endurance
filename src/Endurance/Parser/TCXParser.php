@@ -56,6 +56,7 @@ class TCXParser extends Parser
             $activity->setLaps($laps);
         }
         $activity->setCalories($calories);
+
         return $activity;
     }
 
@@ -117,4 +118,3 @@ class TCXParser extends Parser
         return $point;
     }
 }
-
