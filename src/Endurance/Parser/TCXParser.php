@@ -26,7 +26,7 @@ class TCXParser extends Parser
             throw new \Exception('Empty data to read');
         }
 
-        $xml = simplexml_load_from_string($data);
+        $xml = simplexml_load_string($data);
 
         return $this->parseData($xml);
     }
