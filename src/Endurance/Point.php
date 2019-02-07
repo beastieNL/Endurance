@@ -37,6 +37,16 @@ class Point
         return $this->distance;
     }
 
+    public function setCadance($cadance)
+    {
+        $this->cadance = (float) $cadance;
+    }
+
+    public function getCadance()
+    {
+        return $this->cadance;
+    }
+
     public function setHeartRate($heartrate)
     {
         $this->heartrate = (int) $heartrate;
