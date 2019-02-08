@@ -11,7 +11,7 @@ class AverageCadanceMetric extends Metric
     {
         $count = count($points);
         $values = array_map(function ($point) {
-            return $point->cadance();
+            return $point->getCadance();
         }, $points);
 
         return $count > 0 ? array_sum($values) / $count : 0;
