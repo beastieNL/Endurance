@@ -40,12 +40,12 @@ class Point
 
     public function setCadence($cadence)
     {
-        $this->cadence = (float) $cadence;
+        $this->cadence = (int) $cadence;
     }
 
     public function getCadence()
     {
-        return $this->Cadence;
+        return $this->cadence;
     }
 
     public function setHeartRate($heartrate)
