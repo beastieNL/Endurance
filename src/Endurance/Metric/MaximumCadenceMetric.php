@@ -5,7 +5,7 @@ namespace Endurance\Metric;
 use Endurance\HeartRateZones;
 use Endurance\Metric;
 
-class MaximumCadanceMetric extends Metric
+class MaximumCadenceMetric extends Metric
 {
     public function calculate(array $points, HeartRateZones $zones, array $dependencies)
     {
@@ -14,7 +14,7 @@ class MaximumCadanceMetric extends Metric
         }
 
         return (int) max(array_map(function ($point) {
-            return $point->getCadance();
+            return $point->getCadence();
         }, $points));
     }
 }

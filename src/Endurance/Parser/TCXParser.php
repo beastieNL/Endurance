@@ -107,6 +107,10 @@ class TCXParser extends Parser
         $point->time = new \DateTime($trackpointNode->Time);
         #$point->getTime()->modify((string) $trackpointNode->Time);
 
+        if (isset($trackpointNode->Cadence)) {
+            $point->setCadence((int) $trackpointNode->Cadence);
+        }
+
         if (isset($trackpointNode->HeartRateBpm->Value)) {
             $point->setHeartRate((int) $trackpointNode->HeartRateBpm->Value);
         }

@@ -5,6 +5,7 @@ namespace Endurance;
 class Point
 {
     public $elevation;
+    public $cadence;
     public $distance;
     public $heartrate;
     public $latitude;
@@ -37,14 +38,14 @@ class Point
         return $this->distance;
     }
 
-    public function setCadance($cadance)
+    public function setCadence($cadence)
     {
-        $this->cadance = (float) $cadance;
+        $this->cadence = (float) $cadence;
     }
 
-    public function getCadance()
+    public function getCadence()
     {
-        return $this->cadance;
+        return $this->Cadence;
     }
 
     public function setHeartRate($heartrate)
